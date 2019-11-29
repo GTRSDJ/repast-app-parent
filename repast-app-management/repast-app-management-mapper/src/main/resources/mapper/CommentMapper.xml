@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.app.mapper.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.aaa.lee.app.domain.Comment" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="member_nick_name" property="memberNickName" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="star" property="star" jdbcType="INTEGER" />
+    <result column="member_ip" property="memberIp" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="show_status" property="showStatus" jdbcType="INTEGER" />
+    <result column="product_attribute" property="productAttribute" jdbcType="VARCHAR" />
+    <result column="collect_couont" property="collectCouont" jdbcType="INTEGER" />
+    <result column="read_count" property="readCount" jdbcType="INTEGER" />
+    <result column="pics" property="pics" jdbcType="VARCHAR" />
+    <result column="member_icon" property="memberIcon" jdbcType="VARCHAR" />
+    <result column="replay_count" property="replayCount" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+
+  </resultMap>
+
+  <select id="getseleteAll"  resultType="com.aaa.lee.app.domain.CommentVo">
+    select ord.shop_id ord_shop_id,pt.id id,um.shop_id um_shop_id,um.username um_username,pt.member_nick_name memberNickName,
+    pt.product_name productName,pt.star star,pt.member_ip memberIp,pt.create_time createTime,
+    pt.show_status showStatus,pt.product_attribute productAttribute,pt.collect_couont collectCouont,
+    pt.read_count readCount,pt.pics pics,pt.member_icon memberIcon,pt.replay_count replayCount,
+    pt.content content from
+	ums_member um inner join
+	oms_order ord on um.id =ord.member_id	inner join
+  pms_comment pt on ord.shop_id=pt.shop_id  inner join
+	pms_product ppt on ppt.shop_id=ord.shop_id
+	where  ord.`status`=3 and ord.member_id=#{memberId}
+  </select>
+
+
+  <select id="getCount" resultType="int">
+      select count(*) from
+	ums_member um inner join
+	oms_order ord on um.id =ord.member_id join
+  pms_comment pt on ord.shop_id=pt.shop_id where ord.`status`=3 and ord.member_id=#{memberId}
+  </select>
+
+
+</mapper>
